@@ -1,3 +1,5 @@
+from flytekit import Resources, task
+
 # Importing all dependencies
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -69,6 +71,7 @@ def train(model, epochs, X_train, y_train, loss_function, optimizer):
 
 
 # Running workflow
+@task(requests=Resources(cpu="2",mem="2Gi",storage="0Gi",ephemeral_storage="0Gi"),limits=Resources(cpu="2",mem="2Gi",storage="0Gi",ephemeral_storage="0Gi"),retries=3)
 def run_wf(hp: Hyperparameters) ->ANN_Model:
     # Instantiating X and y
     X, y = collect_data(hp.file_path)
